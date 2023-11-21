@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Input file containing URLs
+input_file="urls.txt"
+
+# Output file for nslookup results
+output_file="output.txt"
+
+# Check if the input file exists
+if [ ! -f "$input_file" ]; then
+    echo "Error: File not found: $input_file"
+    exit 1
+fi
+
+# Process each URL from the input file
+while IFS= read -r url; do
+    # Remove "https://" if present
+    domain="${url#https://}"
+
+    # Perform nslookup and append results to the output file
+    nslookup "$domain" >> "$output_file"
+done < "$input_file"
+
+echo "NSlookup results saved to $output_file"
+# Just makes life easier when looking for IPs, credits: HackerCatt
